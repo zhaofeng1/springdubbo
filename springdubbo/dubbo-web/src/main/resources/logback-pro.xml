@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="CHAR_SET" value="UTF-8"/>
+    <property name="logPath" value="/export/adserver/geoip/logs" />
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logPath}/log.log</File>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>[%d{MM-dd HH:mm:ss.SSS}] [%-5level] [%-14.40X{Trace}] [%-42.42logger{42}:%-4.4L] : %msg%n</pattern>
+            <charset>${CHAR_SET}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${logPath}/log-%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <MaxHistory>7</MaxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="ROOT" level="INFO" additivity="false">
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <logger name="org.springframework" level="error" additivity="false">
+        <appender-ref ref="FILE"/>
+    </logger>
+    <logger name="org.apache.http" level="error" additivity="false">
+        <appender-ref ref="FILE"/>
+    </logger>
+    <logger name="serviceStatsLog" level="WARN"/>
+    <logger name="org.redisson" level="info" additivity="false">
+        <appender-ref ref="FILE"/>
+    </logger>
+    <root>
+        <level value="error"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>
